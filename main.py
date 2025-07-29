@@ -1,25 +1,27 @@
 import os
 from openai import OpenAI
-from dotenv import load_dotenv
+import dotenv
 
-client = OpenAI(
-    api_key = os.getenv("OPENAI_API_KEY"),
-)
+# Load environment variables from .env file
+api_key = dotenv.load_dotenv()
+
+if not api_key:
+    raise ValueError("API KEY not found in environment variables")
+
+client = OpenAI(api_key=api_key)
 
 messages = []
 
 def completion(message):
     global messages
-    chat_completion = client.chat.completions.create(
-        messages.append(
+    messages.append(
             {
                 "role": "user",
-                "content": message,
+                "content": message
             }
-        ),
-        model="gpt-4o",
-    )
-    print(chat_completion)
+        )
+    chat_completion = client.chat.completions.create(messages =  messages,model="gpt-4o",)
+    # print(chat_completion)
     message =   {
         "role": "assistant",
         "content" : chat_completion.choices[0].message.content
@@ -28,7 +30,7 @@ def completion(message):
     print(f"Jarvis said this - {message['content']}")
     
 if __name__ == "__main__":
-    print(f"Jarvis: Hi I am Jarvis, how may I help you ?")
+    print(f"Jarvis: Hi I am Jarvis, how may I help you ?\n")
     while True:
         user_question = input()
         print(f"User: {user_question}")
