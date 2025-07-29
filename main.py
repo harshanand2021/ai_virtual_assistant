@@ -1,10 +1,8 @@
 import os
 from openai import OpenAI
 
-key=os.getenv("API_KEY")
-
 client = OpenAI(
-    api_key = key,
+    api_key = os.getenv("API_KEY"),
 )
 
 messages = []
@@ -29,5 +27,8 @@ def completion(message):
     print(f"Jarvis said this - {message['content']}")
     
 if __name__ == "__main__":
-    user_question = input("Hi I am Jarvis, how may I help you ?")
-    completion(user_question)
+    print(f"Jarvis: Hi I am Jarvis, how may I help you ?")
+    while True:
+        user_question = input()
+        print(f"User: {user_question}")
+        completion(user_question)
